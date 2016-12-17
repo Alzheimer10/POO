@@ -22,6 +22,7 @@
 
 		public function is_die(){
 			echo "<br> {$this->name} muere";
+			exit();
 		}
 
 		public function getName(){
@@ -38,10 +39,15 @@
 		}
 
 		public function takeDamage($damage){
-			$this->setHp($this->hp - $damage);
+
+			$this->setHp($this->hp - $this->absorbDamager($damage));
 			if ($this->hp<=0) {
 				$this->is_die();
 			}
+		}
+
+		protected function absorbDamager($damage){
+			return $damage;
 		}
 	}
 
@@ -49,16 +55,29 @@
 	class Solider extends Unit
 	{
 		protected $damage = 40;
+		protected $armor;
+
+		function __construct($name){
+			parent::__construct($name);
+		}
+
+		public	function setArmor(Armor $Armor = null){
+			$this->armor = $Armor;
+		}
 
 		public function attack(Unit $opponent){
-			echo "<br>{$this->name} corta a {$opponent->getName()} en dos";
+			echo "<br>{$this->name} ataca con la espada a {$opponent->getName()}";
 			$opponent->takeDamage($this->damage);
 		}
 
-		public function takeDamage($damage){
-			return parent::takeDamage($damage / 2);
+		protected function absorbDamager($damage){
+			if ($this->armor)
+				$damage = $this->armor->absorbDamager($damage);
+			return $damage;
 		}
+
 	}
+
 
 	class Archer extends Unit
 	{
@@ -68,17 +87,40 @@
 			echo "<br>{$this->name} Dispara una flechas a {$opponent->getName()}";
 			$opponent->takeDamage($this->damage);
 		}
+	}
 
-		public function takeDamage($damage){
-			if (rand(0,1)==1) {
-				return parent::takeDamage($damage);
-			}
+	interface Armor{
+		public function absorbDamager($damage);
+	}
+
+	class BronzeArmor implements Armor
+	{
+		public function absorbDamager($damage){
+			return $damage/2;
 		}
 	}
 
-	$Solider = new Solider('Pedro');
+	class SilverArmor implements Armor
+	{
+		public function absorbDamager($damage){
+			return $damage/3;
+		}
+	}
 
+	class CurserArmor implements Armor
+	{
+		public function absorbDamager($damage){
+			return $damage*2;
+		}
+	}
+
+
+	$armor = new BronzeArmor();
+	$SilverArmor = new SilverArmor();
+	$CurserArmor = new CurserArmor();
+	$Solider = new Solider('Pedro');
 	$Archer = new Archer('Luis');
 	$Archer->attack($Solider);
+	$Solider->setArmor($CurserArmor);
 	$Archer->attack($Solider);
 	$Solider->attack($Archer);
