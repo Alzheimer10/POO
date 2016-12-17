@@ -6,7 +6,8 @@
 		protected $damage = 20;
 
 		public function attack(Unit $opponent){
-			echo "<br>{$this->name} Dispara una flechas a {$opponent->getName()}";
+			$str = "<br>{$this->name} Dispara una flechas a {$opponent->getName()}";
+			show($str);
 			$opponent->takeDamage($this->damage);
 		}
 	}

@@ -1,5 +1,5 @@
 <?php
-	namespace Items;
+	namespace Unit;
 
 	interface Armor{
 		public function absorbDamager($damage);

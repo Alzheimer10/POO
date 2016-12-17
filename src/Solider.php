@@ -1,7 +1,6 @@
 <?php 
 	namespace Unit;
-	use Items\Armor;
-	
+
 	class Solider extends Unit
 	{
 		protected $damage = 40;
