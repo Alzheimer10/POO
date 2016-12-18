@@ -3,9 +3,10 @@
 	use Unit\Armor;
 	use Unit\Attack;
 	
-	class CurserArmor implements Armor
+	class CurserArmor extends Armor
 	{
-		public function absorbDamager(Attack $attack){
+		public function absorbDamage(Attack $attack)
+		{
 			return $attack->getDamage*2;
 		}
 	}

@@ -1,6 +1,7 @@
 <?php 
 	namespace Unit;
 
+	use Unit\Armors\MissingArmor;
 	class Unit {
 		
 		protected $hp=40;
@@ -12,6 +13,7 @@
 		function __construct($name, Weapon $weapon){
 			$this->name = $name;
 			$this->weapon = $weapon;
+			$this->armor = new MissingArmor();
 		}
 
 		public function setWeapon(Weapon $weapon){
@@ -55,9 +57,7 @@
 		public function takeDamage(Attack $attack){
 
 				$this->setHp(
-					$this->hp - $this->absorbDamager(
-						$attack
-					)
+					$this->hp -$this->armor->absorbDamage($attack)
 				);
 			if ($this->hp<=0) {
 				$this->is_die();
@@ -68,9 +68,4 @@
 			$this->armor = $Armor;
 		}
 
-		protected function absorbDamager(Attack $attack){
-			if ($this->armor)
-				return $this->armor->absorbDamager($attack);
-			return $attack->getDamage();
-		}
 	}
