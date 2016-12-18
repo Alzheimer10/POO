@@ -5,18 +5,27 @@
 		
 		protected $hp=40;
 		protected $name;
+		protected $weapon;
+		protected $armor;
 
 
-		function __construct($name)
-		{
+		function __construct($name, Weapon $weapon){
 			$this->name = $name;
+			$this->weapon = $weapon;
+		}
+
+		public function setWeapon(Weapon $weapon){
+			$this->weapon = $weapon;
 		}
 
 		public function move(Unit $direction){
 			echo "<br>{$this->name} avanza hacia $direction";
 		}
 
-		abstract public function attack(Unit $opponent);
+		public function attack(Unit $opponent){
+			show($this->weapon->getDescription($this,$opponent));
+			$opponent->takeDamage($this->weapon->getDamage());
+		}
 
 		public function is_die(){
 			echo "<br> {$this->name} muere";
@@ -44,7 +53,13 @@
 			}
 		}
 
+		public	function setArmor(Armor $Armor = null){
+			$this->armor = $Armor;
+		}
+
 		protected function absorbDamager($damage){
+			if ($this->armor)
+				$damage = $this->armor->absorbDamager($damage);
 			return $damage;
 		}
 	}

@@ -1,13 +1,17 @@
 <?php
 	namespace Unit;
-	require '../vendor/autoload.php';
+	use Units\Solider;
+	use Units\Archer;
 
-	$armor = new Armors\BronzeArmor();
-	$SilverArmor = new Armors\SilverArmor();
-	$CurserArmor = new Armors\CurserArmor();
-	$Solider = new Solider('Pedro');
-	$Archer = new Archer('Luis');
-	$Archer->attack($Solider);
-	$Solider->setArmor($CurserArmor);
-	$Archer->attack($Solider);
-	$Solider->attack($Archer);
+	require '../vendor/autoload.php';
+	$ramm = new Units\Solider('Ramm', new Weapons\BasicSword);
+	$ramm->setArmor(new Armors\BronzeArmor());
+	$silence= new  Units\Archer('Silence',new Weapons\BasicBow());
+
+	$silence->setWeapon(new Weapons\CrossBow);
+	
+	$silence->attack($ramm);
+
+	$silence->attack($ramm);
+
+	$ramm->attack($silence);
