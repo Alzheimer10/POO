@@ -1,7 +1,7 @@
 <?php 
 	namespace Unit;
 
-	abstract class Unit {
+	class Unit {
 		
 		protected $hp=40;
 		protected $name;
@@ -23,8 +23,15 @@
 		}
 
 		public function attack(Unit $opponent){
-			show($this->weapon->getDescription($this,$opponent));
-			$opponent->takeDamage($this->weapon->getDamage());
+			$attack= $this->weapon->createAttack();
+
+			show('<br>'.$attack->getDescription(
+				$this,$opponent
+			));
+
+			$opponent->takeDamage(
+				$attack
+			);
 		}
 
 		public function is_die(){
@@ -45,9 +52,13 @@
 			return $this->hp;
 		}
 
-		public function takeDamage($damage){
+		public function takeDamage(Attack $attack){
 
-			$this->setHp($this->hp - $this->absorbDamager($damage));
+				$this->setHp(
+					$this->hp - $this->absorbDamager(
+						$attack
+					)
+				);
 			if ($this->hp<=0) {
 				$this->is_die();
 			}
@@ -57,9 +68,9 @@
 			$this->armor = $Armor;
 		}
 
-		protected function absorbDamager($damage){
+		protected function absorbDamager(Attack $attack){
 			if ($this->armor)
-				$damage = $this->armor->absorbDamager($damage);
-			return $damage;
+				return $this->armor->absorbDamager($attack);
+			return $attack->getDamage();
 		}
 	}

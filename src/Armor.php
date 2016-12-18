@@ -2,6 +2,5 @@
 	namespace Unit;
 
 	interface Armor{
-		public function absorbDamager($damage);
+		public function absorbDamager(Attack $attack);
 	}
-

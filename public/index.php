@@ -1,14 +1,13 @@
 <?php
 	namespace Unit;
-	use Units\Solider;
-	use Units\Archer;
 
 	require '../vendor/autoload.php';
-	$ramm = new Units\Solider('Ramm', new Weapons\BasicSword);
-	$ramm->setArmor(new Armors\BronzeArmor());
-	$silence= new  Units\Archer('Silence',new Weapons\BasicBow());
+	
+	$ramm = new Unit('Ramm', new Weapons\BasicSword);
 
-	$silence->setWeapon(new Weapons\CrossBow);
+	$ramm->setArmor(new Armors\SilverArmor());
+
+	$silence= new  Unit('Silence',new Weapons\FireBow());
 	
 	$silence->attack($ramm);
 
